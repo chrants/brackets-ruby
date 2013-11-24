@@ -7,17 +7,40 @@
     
     var execRuby = function(params) {
         var ruby = spawn('ruby', (params));
-        _setRubySpawnCallbacks();
+        _setRubySpawnCallbacks(ruby);
     }
-    var _setRubySpawnCallbacks = function() {}
+    var _setRubySpawnCallbacks = function(ruby) {
+        ruby.stdout.on('data', function(data) {
+            console.log('RUBY EXEC: ' + data);
+        });
+        ruby.stderr.on('data', function(data) {
+            console.error('RUBY EXEC ERR: ' + data);
+        });
+        ruby.on('exit', function (code) {
+          console.log('RUBY child process exited with code ' + code);
+        });
+    }
     
     var execIrb = function(params) {
         var irb = spawn('irb', (params));
-        _setIrbSpawnCallbacks();
+        _setIrbSpawnCallbacks(irb);
     }
-    var _setIrbSpawnCallbacks = function() {}
+    var _setIrbSpawnCallbacks = function(irb) {
+        irb.stdout.on('data', function(data) {
+            console.log('IRB EXEC: ' + data);
+        });
+        irb.stderr.on('data', function(data) {
+            console.error('IRB EXEC ERR: ' + data);
+        });
+        irb.on('exit', function (code) {
+          console.log('IRB child process exited with code ' + code);
+        });
+    }
     
-    var init = function() {}
+    var init = function() {
+        
+        
+    }
     
     exports.init = init;
         
