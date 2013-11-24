@@ -52,6 +52,17 @@
             //    type: "{total: number, free: number}",
             //    description: "amount of total and free memory in bytes"}]
         );
+        DomainManager.registerCommand(
+            "ruby",       // domain name
+            "irb",    // command name
+            execIrb,   // command handler function
+            false,          // this command is synchronous
+            "Runs irb with options specified.",
+            [],             // no parameters
+            //[{name: "memory",
+            //    type: "{total: number, free: number}",
+            //    description: "amount of total and free memory in bytes"}]
+        );
     }
     
     exports.init = init;
