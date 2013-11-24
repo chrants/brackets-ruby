@@ -1,0 +1,27 @@
+/*@font-face
+{
+    font-family: Monaco;
+    src: url(sansation_light.woff);
+}*/
+
+#rb-run {
+    text-decoration: none;   
+    text-align: center;
+    font-size: 14pt;
+    padding-top: 3px;
+    font-family: Monaco, Consolas, Inconsolata, Courier;
+}
+
+#rb-run.running {
+    color: green;
+}
+
+#rb-run.not-running {
+    color: red;   
+}
+
+#rb-run-results-output {
+    min-height: 100px;
+    background-color: black; 
+    color: white;
+}
