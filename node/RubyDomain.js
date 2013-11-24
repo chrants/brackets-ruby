@@ -37,9 +37,21 @@
         });
     }
     
-    var init = function() {
-        
-        
+    function init(DomainManager) {
+        if (!DomainManager.hasDomain("ruby")) {
+            DomainManager.registerDomain("ruby", {major: 0, minor: 1});
+        }
+        DomainManager.registerCommand(
+            "ruby",       // domain name
+            "exec",    // command name
+            execRuby,   // command handler function
+            false,          // this command is synchronous
+            "Runs the ruby program specified in its params.",
+            [],             // no parameters
+            //[{name: "memory",
+            //    type: "{total: number, free: number}",
+            //    description: "amount of total and free memory in bytes"}]
+        );
     }
     
     exports.init = init;
