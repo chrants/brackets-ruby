@@ -9,6 +9,30 @@ String.prototype.replaceAll = function(a, b) {
     return toReturn;
 };
 
+// Splits a string based on its regex and calls the 
+// callback on each part.
+String.prototype.each = function(regex, callback) {
+    var splitted = this.split(regex);
+    for(var i = 0; i < splitted.length; i++){
+        callback(splitted[i]);   
+    }
+    return splitted;
+};
+
+String.prototype.eachLine = function(callback) {
+    return this.each(/\r?\n/, callback);
+};
+
+// Splits a string based on its regex and calls the 
+// callback on each part with each part's index.
+String.prototype.eachWithIndex = function() {
+    var splitted = this.split(regex);
+    for(var i = 0; i < splitted.length; i++){
+        callback(splitted[i], i);   
+    }
+    return splitted;  
+};
+
 
 // Helper function that chains a series of promise-returning
 // functions together via their done callbacks.

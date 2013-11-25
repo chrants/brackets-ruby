@@ -8,6 +8,10 @@ define(function (require, exports, module) {
     
     var COMMAND_ID = "thejava.exec-ruby-build";   // package-style naming to avoid collisions
     
+    var INTERNAL_ERROR_MESSAGE = 
+            "RubyBuilder: An internal error has occured" +
+            "Try restarting Brackets.";
+    
     var EditorManager   = brackets.getModule("editor/EditorManager"),
         FileUtils       = brackets.getModule("file/FileUtils"),
         InMemoryFile    = brackets.getModule("document/InMemoryFile"),
@@ -50,7 +54,7 @@ define(function (require, exports, module) {
                 console.log(editor);
                 console.log(document);
                 console.log(document.getLanguage());
-                window.alert('There is no active window!');
+                window.alert('RubyBuilder: There is no active window!');
                 _sideButton.removeClass('running')
                         .addClass('not-running')
                         .removeProp('disabled');
@@ -73,7 +77,6 @@ define(function (require, exports, module) {
         );
     };
     
-    //PanelManager.createBottomPanel("poop-extension.poop", $("<p>Poop da Woop!!!</p>"));
     var _message = 'Welcome to Ruby coolness';
     
     var _sideButton = $('<a href="#"></a>')
@@ -99,8 +102,6 @@ define(function (require, exports, module) {
     
     $("#main-toolbar .buttons").append(_sideButton);
     
-    //$('#status-bar').append('<p>'+_message+'</p>');
-    
     // Helper function to connect to node
     function connect() {
         var connectionPromise = nodeConnection.connect(true);
@@ -116,13 +117,13 @@ define(function (require, exports, module) {
         var path = ExtensionUtils.getModulePath(module, "node/RubyDomain");
         var loadPromise = nodeConnection.loadDomains([path], true);
         loadPromise.fail(function () {
-            console.log("[brackets-ruby-node] failed to load domain");
+            console.log("[brackets-ruby] failed to load domain");
             alertInternalError();
         });
         return loadPromise;
     };
     
-    // Helper function that runs the simple.getMemory command and
+    // Helper function that runs the ruby.exec command and
     // logs the result to the console
     var _loadExec = function(options) {
         var execParams = [];
@@ -139,7 +140,7 @@ define(function (require, exports, module) {
         console.log('About to call ruby.exec with: ' + execParams);
         var execPromise = nodeConnection.domains.ruby.exec(execParams);
         execPromise.fail(function (err) {
-            console.error("[brackets-ruby-node] failed to run ruby.exec", err);
+            console.error("[brackets-ruby] failed to run ruby.exec", err);
         });
         execPromise.done(function (out) {
             console.log(
@@ -168,7 +169,7 @@ define(function (require, exports, module) {
     };
     
     var alertInternalError = function() {
-        window.alert("RubyBuilder: An internal error has occured");
+        window.alert(INTERNAL_ERROR_MESSAGE);
         _sideButton.removeClass('running')
                 .addClass('not-running')
                 .removeProp('disabled');
@@ -232,7 +233,7 @@ define(function (require, exports, module) {
     /* ryuk87 END */
     
     
-    //SLIM Definition
+    //Slim Definition
     require('./src/mode/slim'); //Custom slim definition file
     LanguageManager.defineLanguage('slim', {
         name: "Slim",
@@ -251,20 +252,6 @@ define(function (require, exports, module) {
             ["erb", "htm.erb", "html.erb", "erubis"],
 		blockComment: ["<!--", "-->"]
 	});
-    
-    
-    /*var util = require('util'),
-        exec = require('child_process').exec,
-        child;
-    
-    child = exec('cat *.js bad_file | wc -l', // command line argument directly in string
-      function (error, stdout, stderr) {      // one easy function to capture data/errors
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-          console.log('exec error: ' + error);
-        }
-    }); */
     
     //window.console.log(require);
     //window.console.log(brackets);
