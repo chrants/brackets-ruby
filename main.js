@@ -41,12 +41,15 @@ define(function (require, exports, module) {
     
     var _handleRubyRun = function() {
         window.setTimeout( function() {
-            var editor = EditorManager.getCurrentFullEditor();
+            var editor = EditorManager.getCurrentFullEditor() || EditorManager.getActiveEditor();
             var document = DocumentManager.getCurrentDocument();
-            if (editor && document && document.getLanguage() === "ruby") {
+            if (editor && document && document.getLanguage().getName() === "Ruby") {
                 window.alert('Ruby build running!');
                 _runRuby();
             } else {
+                console.log(editor);
+                console.log(document);
+                console.log(document.getLanguage());
                 window.alert('There is no active window!');
                 _sideButton.removeClass('running')
                         .addClass('not-running')
@@ -103,6 +106,7 @@ define(function (require, exports, module) {
         var connectionPromise = nodeConnection.connect(true);
         connectionPromise.fail(function () {
             console.error("[brackets-ruby-node] failed to connect to node");
+            alertInternalError();
         });
         return connectionPromise;
     }
@@ -113,6 +117,7 @@ define(function (require, exports, module) {
         var loadPromise = nodeConnection.loadDomains([path], true);
         loadPromise.fail(function () {
             console.log("[brackets-ruby-node] failed to load domain");
+            alertInternalError();
         });
         return loadPromise;
     };
@@ -160,6 +165,13 @@ define(function (require, exports, module) {
                 .addClass('not-running')
                 .removeProp('disabled');
         return execPromise;
+    };
+    
+    var alertInternalError = function() {
+        window.alert("RubyBuilder: An internal error has occured");
+        _sideButton.removeClass('running')
+                .addClass('not-running')
+                .removeProp('disabled');
     };
     
     
