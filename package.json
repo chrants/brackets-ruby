@@ -4,7 +4,7 @@
     "description": 
         "Rails building is on the way! Spawns a ruby child process with the active file and logs results to stdout. Adds comments to Ruby files, html highlight for ERB files and HAML files.",
     "homepage": "N/A",
-    "version": "0.2.3",
+    "version": "0.3.0.broken",
     "author": "Christian Tschoepe<tschoepe.christian@gmail.com>",
     "license": "MIT",
     "engines": {
