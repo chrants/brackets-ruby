@@ -5,8 +5,12 @@
         exec            = child_process.exec,
         spawn           = child_process.spawn;
     
+    var platform = process.platform,
+        isWindows = platform === 'win32';
+    
     var execRuby = function(params) {
-        var ruby = spawn('ruby', (params));
+        var cmd = isWindows ? 'ruby.exe' : 'ruby';
+        var ruby = spawn(cmd, (params));
         _setRubySpawnCallbacks(ruby);
     }
     var _setRubySpawnCallbacks = function(ruby) {
@@ -16,13 +20,17 @@
         ruby.stderr.on('data', function(data) {
             console.error('RUBY EXEC ERR: ' + data);
         });
+        ruby.on('error', function() {
+            console.log(arguments);
+        });
         ruby.on('exit', function (code) {
-          console.log('RUBY child process exited with code ' + code);
+            console.log('RUBY child process exited with code ' + code);
         });
     }
     
     var execIrb = function(params) {
-        var irb = spawn('irb', (params));
+        var cmd = isWindows ? 'irb.exe' : 'irb';
+        var irb = spawn('cmd', (params));
         _setIrbSpawnCallbacks(irb);
     }
     var _setIrbSpawnCallbacks = function(irb) {
@@ -32,8 +40,11 @@
         irb.stderr.on('data', function(data) {
             console.error('IRB EXEC ERR: ' + data);
         });
+        irb.on('error', function() {
+            console.log(arguments);
+        });
         irb.on('exit', function (code) {
-          console.log('IRB child process exited with code ' + code);
+            console.log('IRB child process exited with code ' + code);
         });
     }
     
@@ -47,7 +58,7 @@
             execRuby,   // command handler function
             false,          // this command is synchronous
             "Runs the ruby program specified in its params.",
-            [],             // no parameters
+            []             // no parameters
             //[{name: "memory",
             //    type: "{total: number, free: number}",
             //    description: "amount of total and free memory in bytes"}]
@@ -58,7 +69,7 @@
             execIrb,   // command handler function
             false,          // this command is synchronous
             "Runs irb with options specified.",
-            [],             // no parameters
+            []             // no parameters
             //[{name: "memory",
             //    type: "{total: number, free: number}",
             //    description: "amount of total and free memory in bytes"}]
